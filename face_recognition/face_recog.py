@@ -6,12 +6,26 @@ import camera
 import os
 import numpy as np
 
+
 class FaceRecog():
     def __init__(self):
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
         # instead.
-        self.camera = camera.VideoCamera()
+
+        # To use webcam
+        # self.camera = camera.VideoCamera()
+
+        # To use video input
+        self.camera = cv2.VideoCapture(
+            "../data/obama2.mp4"  # video input
+        )
+
+        # Save Video
+        self.videowriter = cv2.VideoWriter(
+            "recog.mp4", cv2.VideoWriter_fourcc(
+                *'MP4V'), 30, (int(self.camera.get(3)), int(self.camera.get(4)))
+        )
 
         self.known_face_encodings = []
         self.known_face_names = []
@@ -38,25 +52,42 @@ class FaceRecog():
         del self.camera
 
     def get_frame(self):
+
+        # ============for webcam=============
+
         # Grab a single frame of video
-        frame = self.camera.get_frame()
-
         # Resize frame of video to 1/4 size for faster face recognition processing
-        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+
+        # remove comments below to use webcam
+
+        # frame = self.camera.get_frame()
+        # small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        # rgb_small_frame = small_frame[:, :, ::-1]
+        # ============end webcam=============
+
+        # ============for Video=============
+        ret, frame = self.camera.read()
+        if frame is None:
+            return None
+
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         rgb_small_frame = small_frame[:, :, ::-1]
+        # =============end video=============
 
         # Only process every other frame of video to save time
         if self.process_this_frame:
             # Find all the faces and face encodings in the current frame of video
-            self.face_locations = face_recognition.face_locations(rgb_small_frame)
-            self.face_encodings = face_recognition.face_encodings(rgb_small_frame, self.face_locations)
+            self.face_locations = face_recognition.face_locations(
+                rgb_small_frame)
+            self.face_encodings = face_recognition.face_encodings(
+                rgb_small_frame, self.face_locations)
 
             self.face_names = []
             for face_encoding in self.face_encodings:
                 # See if the face is a match for the known face(s)
-                distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
+                distances = face_recognition.face_distance(
+                    self.known_face_encodings, face_encoding)
                 min_value = min(distances)
 
                 # tolerance: How much distance between faces to consider it a match. Lower is more strict.
@@ -79,12 +110,15 @@ class FaceRecog():
             left *= 4
 
             # Draw a box around the face
-            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+            cv2.rectangle(frame, (left, top),
+                          (right, bottom), (0, 0, 255), 2)
 
             # Draw a label with a name below the face
-            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            cv2.rectangle(frame, (left, bottom - 35),
+                          (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            cv2.putText(frame, name, (left + 6, bottom - 6),
+                        font, 1.0, (255, 255, 255), 1)
 
         return frame
 
@@ -100,11 +134,16 @@ class FaceRecog():
 if __name__ == '__main__':
     face_recog = FaceRecog()
     print(face_recog.known_face_names)
+
     while True:
         frame = face_recog.get_frame()
 
+        if frame is None:
+            break
+
         # show the frame
         cv2.imshow("Frame", frame)
+        face_recog.videowriter.write(frame)
         key = cv2.waitKey(1) & 0xFF
 
         # if the `q` key was pressed, break from the loop
@@ -112,5 +151,6 @@ if __name__ == '__main__':
             break
 
     # do a bit of cleanup
+    face_recog.videowriter.release()
     cv2.destroyAllWindows()
     print('finish')
