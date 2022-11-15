@@ -5,6 +5,14 @@ import cv2
 import camera
 import os
 import numpy as np
+import sys
+
+f = open("center.txt", "w")
+
+path = sys.argv[2]
+# argv[0] : face_recog_video.py
+# argv[1] : --source
+# argv[2] : path
 
 
 class FaceRecog():
@@ -12,11 +20,8 @@ class FaceRecog():
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
         # instead.
-        path = "/Users/yooseungkim/Downloads/test2_motion.mp4"
         # To use video input
-        self.camera = cv2.VideoCapture(
-            path  # video input
-        )
+        self.camera = cv2.VideoCapture(path)  # video input
 
         name = path.split("/")[-1][:-4]
 
@@ -87,11 +92,18 @@ class FaceRecog():
 
         # Display the results
         for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):
+
             # Scale back up face locations since the frame we detected in was scaled to 1/4 size
             top *= 4
             right *= 4
             bottom *= 4
             left *= 4
+
+            center = ((right + left) // 2, (top + bottom) // 2)
+            if name == "obama":
+                print(f"{name}: ({center[0]}, {center[1]})")
+
+            cv2.line(frame, center, center, (255, 0, 0), 10)
 
             # Draw a box around the face
             cv2.rectangle(frame, (left, top),
@@ -104,6 +116,7 @@ class FaceRecog():
             cv2.putText(frame, name, (left + 6, bottom - 6),
                         font, 1.0, (255, 255, 255), 1)
 
+        f.write(f"{top}, {right}, {bottom}, {left}\n")
         return frame
 
     def get_jpg_bytes(self):
@@ -119,8 +132,11 @@ if __name__ == '__main__':
     face_recog = FaceRecog()
     print(face_recog.known_face_names)
 
+    frame_no = 1
     while True:
         frame = face_recog.get_frame()
+        print(frame_no)
+        frame_no += 1
 
         if frame is None:
             break
@@ -135,6 +151,7 @@ if __name__ == '__main__':
             break
 
     # do a bit of cleanup
+    f.close()
     face_recog.videowriter.release()
     cv2.destroyAllWindows()
     print('finish')
