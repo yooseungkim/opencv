@@ -17,4 +17,6 @@ Put picture with one person's face in `knowns` directory. Change the file name a
 ### Example
 
 `python face_recog_video --source data/obama.mp4`
+
+
 `python face_recog_video --source data/obama.mp4 --verbose True, --target obama`
