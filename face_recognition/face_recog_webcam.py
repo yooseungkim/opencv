@@ -14,18 +14,13 @@ class FaceRecog():
         # instead.
 
         # To use webcam
-        # self.camera = camera.VideoCamera()
-
-        # To use video input
-        self.camera = cv2.VideoCapture(
-            "../data/obama2.mp4"  # video input
-        )
+        self.camera = camera.VideoCamera()
 
         # Save Video
-        self.videowriter = cv2.VideoWriter(
-            "recog.mp4", cv2.VideoWriter_fourcc(
-                *'MP4V'), 30, (int(self.camera.get(3)), int(self.camera.get(4)))
-        )
+        # self.videowriter = cv2.VideoWriter(
+        #     "recog.mp4", cv2.VideoWriter_fourcc(
+        #         *'MP4V'), 30, (int(self.camera.get(3)), int(self.camera.get(4)))
+        # )
 
         self.known_face_encodings = []
         self.known_face_names = []
@@ -33,6 +28,7 @@ class FaceRecog():
         # Load sample pictures and learn how to recognize it.
         dirname = 'knowns'
         files = os.listdir(dirname)
+        print(files)
         for filename in files:
             name, ext = os.path.splitext(filename)
             if ext == '.jpg':
@@ -41,6 +37,7 @@ class FaceRecog():
                 img = face_recognition.load_image_file(pathname)
                 face_encoding = face_recognition.face_encodings(img)[0]
                 self.known_face_encodings.append(face_encoding)
+                print(filename, " encoded")
 
         # Initialize some variables
         self.face_locations = []
@@ -52,28 +49,9 @@ class FaceRecog():
         del self.camera
 
     def get_frame(self):
-
-        # ============for webcam=============
-
-        # Grab a single frame of video
-        # Resize frame of video to 1/4 size for faster face recognition processing
-        # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-
-        # remove comments below to use webcam
-
-        # frame = self.camera.get_frame()
-        # small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-        # rgb_small_frame = small_frame[:, :, ::-1]
-        # ============end webcam=============
-
-        # ============for Video=============
-        ret, frame = self.camera.read()
-        if frame is None:
-            return None
-
+        frame = self.camera.get_frame()
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         rgb_small_frame = small_frame[:, :, ::-1]
-        # =============end video=============
 
         # Only process every other frame of video to save time
         if self.process_this_frame:
@@ -143,7 +121,7 @@ if __name__ == '__main__':
 
         # show the frame
         cv2.imshow("Frame", frame)
-        face_recog.videowriter.write(frame)
+        # face_recog.videowriter.write(frame)
         key = cv2.waitKey(1) & 0xFF
 
         # if the `q` key was pressed, break from the loop
@@ -151,6 +129,6 @@ if __name__ == '__main__':
             break
 
     # do a bit of cleanup
-    face_recog.videowriter.release()
+    # face_recog.videowriter.release()
     cv2.destroyAllWindows()
     print('finish')
