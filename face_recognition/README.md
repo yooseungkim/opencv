@@ -1,18 +1,20 @@
 # Face Recognition
 
-Display webcam video in real time with person's names on the video.
+Put picture with one person's face in `knowns` directory. Change the file name as the person's name like: `john.jpg` or `jane.jpg`. Then run `python face_recog_video.py --source "path" ` or `python face_recog_webcam.py`
 
-* camera.py - check webcam
-* face_recog.py - recognize faces on webcam frame
-* live_streaming.py - send video over network http://IP_addr:5000/
+### Saving Videos and Center Points
 
-All 3 files are runnable like this:
-```
-$ python camera.py
-$ python face_recog.py
-$ python live_streaming.py
-```
+- Saved at the folder `recog_video`
+- both .mp4 and .txt file is saved
+- name of the file is the same as input file
 
-Put picture with one person's face in `knowns` directory. Change the file name as the person's name like: `john.jpg` or `jane.jpg`. Then run `python face_recog.py`. Or `python live_streaming.py` to send video over network.
+### `face_recog_video.py` flag arguments
 
-Visit [https://ukayzm.github.io/python-face-recognition/](https://ukayzm.github.io/python-face-recognition/) for more information.
+- `--source` : **`required`**, path to saved videos
+- `--verbose` : `default == False`, if `--verbose True`, print the center points in each frame
+- `--target` : `default == None`, if `--target "obama"`, save the points only for "obama". otherwise, save all.
+
+### Example
+
+`python face_recog_video --source data/obama.mp4`
+`python face_recog_video --source data/obama.mp4 --verbose True, --target obama`

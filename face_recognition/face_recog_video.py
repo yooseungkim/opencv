@@ -5,14 +5,15 @@ import cv2
 import camera
 import os
 import numpy as np
-import sys
+import argparse
 
-f = open("center.txt", "w")
+parser = argparse.ArgumentParser()
 
-path = sys.argv[2]
-# argv[0] : face_recog_video.py
-# argv[1] : --source
-# argv[2] : path
+parser.add_argument("--source", dest="path", required=True)
+parser.add_argument("--verbose", dest="verbose", default=False)
+parser.add_argument("--target", dest="target", default=None)
+args = parser.parse_args()
+path = args.path
 
 
 class FaceRecog():
@@ -23,11 +24,12 @@ class FaceRecog():
         # To use video input
         self.camera = cv2.VideoCapture(path)  # video input
 
-        name = path.split("/")[-1][:-4]
+        self.name = path.split("/")[-1][:-4]
 
+        self.file = open(f"recog_video/{self.name}_center.txt", "w")
         # Save Video
         self.videowriter = cv2.VideoWriter(
-            f"recog_video/{name}.mp4", cv2.VideoWriter_fourcc(
+            f"recog_video/{self.name}.mp4", cv2.VideoWriter_fourcc(
                 *'MP4V'), 30, (int(self.camera.get(3)), int(self.camera.get(4)))
         )
 
@@ -100,7 +102,7 @@ class FaceRecog():
             left *= 4
 
             center = ((right + left) // 2, (top + bottom) // 2)
-            if name == "obama":
+            if args.verbose:
                 print(f"{name}: ({center[0]}, {center[1]})")
 
             cv2.line(frame, center, center, (255, 0, 0), 10)
@@ -115,8 +117,11 @@ class FaceRecog():
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, name, (left + 6, bottom - 6),
                         font, 1.0, (255, 255, 255), 1)
+            if args.target == None:
+                self.file.write(f"{name} : {top}, {right}, {bottom}, {left}\n")
+            elif args.target == name:
+                self.file.write(f"{top}, {right}, {bottom}, {left}\n")
 
-        f.write(f"{top}, {right}, {bottom}, {left}\n")
         return frame
 
     def get_jpg_bytes(self):
@@ -132,11 +137,8 @@ if __name__ == '__main__':
     face_recog = FaceRecog()
     print(face_recog.known_face_names)
 
-    frame_no = 1
     while True:
         frame = face_recog.get_frame()
-        print(frame_no)
-        frame_no += 1
 
         if frame is None:
             break
@@ -151,7 +153,7 @@ if __name__ == '__main__':
             break
 
     # do a bit of cleanup
-    f.close()
+    face_recog.file.close()
     face_recog.videowriter.release()
     cv2.destroyAllWindows()
     print('finish')
