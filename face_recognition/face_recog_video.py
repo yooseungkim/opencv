@@ -1,5 +1,4 @@
 # face_recog.py
-
 import face_recognition
 import cv2
 import camera
@@ -24,7 +23,10 @@ class FaceRecog():
         # To use video input
         self.camera = cv2.VideoCapture(path)  # video input
 
-        self.name = path.split("/")[-1][:-4]
+        # self.name = path.split("/")[-1][:-4]
+        self.name = "test"
+
+        # print(self.name)
 
         self.file = open(f"recog_video/{self.name}_center.txt", "w")
         # Save Video
@@ -57,14 +59,15 @@ class FaceRecog():
     def __del__(self):
         del self.camera
 
-    def get_frame(self):
+    def get_frame(self, fr):
 
         ret, frame = self.camera.read()
         if frame is None:
             return None
 
-        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-        rgb_small_frame = small_frame[:, :, ::-1]
+        # small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        # rgb_small_frame = small_frame[:, :, ::-1]
+        rgb_small_frame = frame[:, :, ::-1]
 
         # Only process every other frame of video to save time
         if self.process_this_frame:
@@ -92,14 +95,17 @@ class FaceRecog():
 
         self.process_this_frame = not self.process_this_frame
 
+        found = None
         # Display the results
         for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):
 
             # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-            top *= 4
-            right *= 4
-            bottom *= 4
-            left *= 4
+            # top *= 4
+            # right *= 4
+            # bottom *= 4
+            # left *= 4
+
+            name = "".join(i for i in name if not i.isdigit())
 
             center = ((right + left) // 2, (top + bottom) // 2)
             if args.verbose:
@@ -117,10 +123,14 @@ class FaceRecog():
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, name, (left + 6, bottom - 6),
                         font, 1.0, (255, 255, 255), 1)
-            if args.target == None:
-                self.file.write(f"{name} : {top}, {right}, {bottom}, {left}\n")
-            elif args.target == name:
-                self.file.write(f"{top}, {right}, {bottom}, {left}\n")
+
+            if args.target == name:  # 주인공
+                found = True
+                self.file.write(
+                    f"{fr}, {(top + bottom) / 2}, {(right + left) / 2}\n")
+
+        if found == None:
+            self.file.write(f"{fr}, None, None\n")
 
         return frame
 
@@ -136,9 +146,9 @@ class FaceRecog():
 if __name__ == '__main__':
     face_recog = FaceRecog()
     print(face_recog.known_face_names)
-
+    fr = 0
     while True:
-        frame = face_recog.get_frame()
+        frame = face_recog.get_frame(fr)
 
         if frame is None:
             break
@@ -147,6 +157,8 @@ if __name__ == '__main__':
         cv2.imshow("Frame", frame)
         face_recog.videowriter.write(frame)
         key = cv2.waitKey(1) & 0xFF
+
+        fr += 1
 
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):

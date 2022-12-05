@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" class="" translate="">
+<head>
+  
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="twitter:title" property="og:title" itemprop="title name" content="코딩테스트 연습 - 게임 맵 최단거리">
+<meta name="og:title" property="og:title" itemprop="title name" content="코딩테스트 연습 - 게임 맵 최단거리">
+<meta name="twitter:image" property="og:image" itemprop="image primaryImageOfPage" content="https://image.freepik.com/free-vector/landing-page-template-for-a-website_23-2147782747.jpg">
+<meta name="og:image" property="og:image" itemprop="image primaryImageOfPage" content="https://image.freepik.com/free-vector/landing-page-template-for-a-website_23-2147782747.jpg">
+<meta name="twitter:url" property="og:url" content="https://programmers.co.kr/">
+<meta name="og:url" property="og:url" content="https://programmers.co.kr/">
+<meta charset="utf-8">
+<title>코딩테스트 연습 - 게임 맵 최단거리 | Programmers School</title>
+<link rel="shortcut icon" type="image/x-icon" href="https://school.programmers.co.kr/assets/icons/favicon-40b78633b6556a68c3da8e2125c31512fbd01d09906ab76c8a8ff289e494cadb.png">
+<link rel="apple-touch-icon" type="image/png" href="https://school.programmers.co.kr/assets/icons/apple-icon-6eafc2c4c58a21aef692d6e44ce99d41f999c71789f277317532d0a9c6db8976.png">
+<meta name="keywords" content="코딩 교육, 코딩, 프로그래밍, 실습, 생활코딩, 알고리즘, python3">
+<meta property="fb:app_id" content="339079816467879">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Programmers School">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<meta name="image" content="https://image.freepik.com/free-vector/landing-page-template-for-a-website_23-2147782747.jpg">
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="qUfazKrxqPvs87EhEKyJucpTW2NZ4RQui4kjh-bOSGN9wKn63dvSrA8Ik5QU28QAHYtbMNp-vZO_Qo1EOpWldw" />
+<meta name="action-cable-url" content="wss://ws.programmers.co.kr:443/cable" />
+<script type="text/javascript" charset="utf-8">
+  window.__env__ = {
+  STAGE: 'production',
+  SENTRY_DSN: 'https://96f9fc1ff3f44acbb98a9c156338d14b@o1070092.ingest.sentry.io/6136918',
+  MINERVA_URL: 'minerva.programmers.co.kr',
+  HERA_CLIENT_HOST: 'https://d1nuzc1w51n1es.cloudfront.net',
+  PROGRAMMERS_HOST: 'programmers.co.kr',
+  BUSINESS_HOST: 'business.programmers.co.kr',
+  SCHOOL_HOST: 'school.programmers.co.kr',
+  CAREER_HOST: 'career.programmers.co.kr',
+  CAMPUS_HOST: 'campus.programmers.co.kr',
+  GAIA_HOST: 'gaia.programmers.co.kr',
+  PROGRAMMERS_WS_HOST: 'ws.programmers.co.kr',
+  COMMUNITY_HOST: 'community.programmers.co.kr'
+};
+
+</script>
+
+
+
+  <link rel="stylesheet" media="all" href="/assets/library-fde8239530a1278c686e9b405fb833ba36a6cdf92d0f6433a27713dd62f061be.css" debug="false" />
+  <link rel="stylesheet" media="all" href="/assets/application-57d219dc8d212694d93b86eefb6340902a1f00cf222efa384a36a5a8b183e441.css" />
+  <link rel="stylesheet" media="all" href="/assets/school-78007666cc2e194116357b0e812c384fcba18a819f510fb4f6b1372333164738.css" />
+
+
+  <!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+  w[l] = w[l] || [];
+  w[l].push({
+    'gtm.start':
+      new Date().getTime(), event: 'gtm.js'
+  });
+  var f = d.getElementsByTagName(s)[0],
+    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+  j.async = true;
+  j.src =
+    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+  f.parentNode.insertBefore(j, f);
+})(window, document, 'script', 'dataLayer', 'GTM-NT8HLJD');</script>
+<!-- End Google Tag Manager -->
+
+
+</head>
+<body class="learn-lessons learn-lessons-show"
+      data-ns="Learn"
+      data-controller="lessons"
+      data-action="show"
+      data-defaultLocale="ko"
+      data-locale="en">
+
+
+
+  <div class="navbar navbar-dark navbar-expand-lg navbar-application navbar-breadcrumb">
+  <a class="navbar-brand" href="/">
+    <img alt="logo" width="24" src="/assets/bi-symbol-light-49a242793b7a8b540cfc3489b918e3bb2a6724f1641572c14c575265d7aeea38.png" />
+</a>  <ol class="breadcrumb"><li><a href="/learn/challenges">Coding Test Practice</a></li><li><a href="/learn/courses/30/parts/12421">깊이/너비 우선 탐색(DFS/BFS)</a></li><li class="active">게임 맵 최단거리</li></ol>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item"><a onclick="Learn.lessons.challengeable.startTour(true)" class="nav-link" id="help" href="#">Help</a></li>
+        <li class="nav-item"><a class="nav-link" data-remote="true" href="/compile_options">Compiler Option</a></li>
+      </ul>
+    </div>
+</div>
+
+
+
+<div class="main theme-dark">
+  
+<script src="https://main.dpjvr2n0fohkw.amplifyapp.com/ce39f9152d428af3986d.js" defer="defer"></script>
+
+
+  <div class="lesson-content"
+       data-course-slug="알고리즘-연습"
+       data-course-id="30"
+       data-lesson-id="1844"
+       data-lesson-type="Challenge"
+       data-next-lesson-id="">
+
+    
+
+<ul class="challenge-nav nav nav-tabs nav-tabs-dark task-tab" id="tab" role="tablist">
+  <li class="nav-item algorithm-nav-link algorithm-title">
+    The Shortest Distance on Game Map
+  </li>
+
+  
+<div class="challenge-settings nav-item">
+    <div class="btn-group-theme btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-sm btn-outline-dark active">
+          <input type="radio" name="themes" autocomplete="off" checked data-toggle="button" data-theme="dark">dark
+        </label>
+        <label class="btn btn-sm btn-outline-dark ">
+          <input type="radio" name="themes" autocomplete="off"  data-toggle="button" data-theme="light">light
+        </label>
+    </div>
+
+      <div data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Choose a key map of the code editor. if you have no preference choose
+[sublime].">
+        <div class="btn-group-keymap btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-sm btn-outline-dark active">
+              <input type="radio" name="keymaps" autocomplete="off" checked data-keymap="sublime">sublime
+            </label>
+            <label class="btn btn-sm btn-outline-dark ">
+              <input type="radio" name="keymaps" autocomplete="off"  data-keymap="vim">vim
+            </label>
+            <label class="btn btn-sm btn-outline-dark ">
+              <input type="radio" name="keymaps" autocomplete="off"  data-keymap="emacs">emacs
+            </label>
+        </div>
+      </div>
+
+    <div class="dropdown-language" id="tour7">
+      <button class="btn btn-sm btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
+        Python3
+      </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="/learn/courses/30/lessons/1844?language=cpp">C++</a>
+            <a class="dropdown-item" href="/learn/courses/30/lessons/1844?language=csharp">C#</a>
+            <a class="dropdown-item" href="/learn/courses/30/lessons/1844?language=java">Java</a>
+            <a class="dropdown-item" href="/learn/courses/30/lessons/1844?language=javascript">JavaScript</a>
+            <a class="dropdown-item" href="/learn/courses/30/lessons/1844?language=python3">Python3</a>
+        </div>
+    </div>
+
+
+  <div class="connection-box connection-status disconnected js-connection-status-alert">
+    <svg class="ic-18"><use xlink:href="/assets/svg-defs-0e122b08d95a31ed9cbfac254dc90036884da0900f44451857509e3b4e7d29d6.svg#ic-power-off"/></svg>
+    <span class="connection-status-txt">Network disconnected</span>
+  </div>
+</div>
+
+</ul>
+
+<div class="challenge-content lesson-algorithm-main-section "
+     data-challengeable-id="301"
+     data-challengeable-type="algorithm"
+     data-algorithm-type="standard"
+     data-language="python3"
+     data-user-id=""
+     data-interface-type="function">
+    
+
+<div class="main-section ">
+  <div class="guide-section " id="tour2">
+    <div class="guide-section-description">
+      <h6 class="guide-section-title">Description</h6>
+      <div class="markdown solarized-dark"><p>ROR game is a game where players are divided into two teams and a team wins if they destroy the camp of the other team first. Therefore, each team's goal is to go to the other team's camp as quickly as possible.</p>
+
+<p>You are going to play the game as a member of one side. Following shows an example where in a 5 x 5 map, your character is placed in (row: 1, column: 1) and camp of the other team is placed in (row: 5, column: 5).</p>
+
+<p><img src="https://grepp-programmers.s3.ap-northeast-2.amazonaws.com/files/production/dc3a1b49-13d3-4047-b6f8-6cc40b2702a7/%E1%84%8E%E1%85%AC%E1%84%83%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A5%E1%84%85%E1%85%B51_sxuruo.png" title="" alt="최단거리1_sxuruo.png"></p>
+
+<p>In the above figure, you cannot move through black space, while you can move freely through white spaces. The character moves by one space at once in East, West, South, and North directions. Also the character cannot go out of the map.<br>
+Following example shows 2 ways to move the character to the other team's camp.</p>
+
+<ul>
+<li>In the first method, the character arrives at the camp of the other team through 11 spaces.</li>
+</ul>
+
+<p><img src="https://grepp-programmers.s3.ap-northeast-2.amazonaws.com/files/production/9d909e5a-ca95-4088-9df9-d84cb804b2b0/%E1%84%8E%E1%85%AC%E1%84%83%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A5%E1%84%85%E1%85%B52_hnjd3b.png" title="" alt="최단거리2_hnjd3b.png"></p>
+
+<ul>
+<li>In the second method, the character arrives at the camp of the other team through 15 spaces.</li>
+</ul>
+
+<p><img src="https://grepp-programmers.s3.ap-northeast-2.amazonaws.com/files/production/4b7cd629-a3c2-4e02-b748-a707211131de/%E1%84%8E%E1%85%AC%E1%84%83%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A5%E1%84%85%E1%85%B53_ntxygd.png" title="" alt="최단거리3_ntxygd.png"></p>
+
+<p>Therefore, the first way is the fastest way to get to the other team's camp.<br>
+If the other team builds walls around the camp, you can not move to their camp. For example, in the following case, your character cannot arrive at the other team's camp.</p>
+
+<p><img src="https://grepp-programmers.s3.ap-northeast-2.amazonaws.com/files/production/d963b4bd-12e5-45da-9ca7-549e453d58a9/%E1%84%8E%E1%85%AC%E1%84%83%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A5%E1%84%85%E1%85%B54_of9xfg.png" title="" alt="최단거리4_of9xfg.png"></p>
+
+<p>Given the status of game map <code>maps</code> as a parameter, write a function solution to return the <strong>minimum</strong> number of moves required for your character to arrive at the camp of the other team. But, return -1 when there is no way to reach their camp.</p>
+
+<h5>Constraints</h5>
+
+<ul>
+<li><code>maps</code> is a 2-dimensional array containing the status of the game map with n x m size. n and m are natural number between 1 and 100.</li>
+<li>n and m may be either the same or different each other, but there is no case where both are given as 1.</li>
+<li><code>maps</code> consists of 0 and 1 only, which indicates the space with wall and without wall, respectively.</li>
+<li>Initially, the character is located at the left top of the game map (1, 1), and the camp of the other team is at the right bottom of the game map (n, m).</li>
+</ul>
+
+<hr>
+
+<h5>Examples</h5>
+<table class="table">
+        <thead><tr>
+<th>maps</th>
+<th>answer</th>
+</tr>
+</thead>
+        <tbody><tr>
+<td>[[1,0,1,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,1,0,1],[0,0,0,0,1]]</td>
+<td>11</td>
+</tr>
+<tr>
+<td>[[1,0,1,1,1],[1,0,1,0,1],[1,0,1,1,1],[1,1,1,0,0],[0,0,0,0,1]]</td>
+<td>-1</td>
+</tr>
+</tbody>
+      </table>
+<p>Example #1<br>
+Data is given as follows.</p>
+
+<p><img src="https://grepp-programmers.s3.ap-northeast-2.amazonaws.com/files/production/6db71f7f-58d3-4623-9fab-7cd99fa863a5/%E1%84%8E%E1%85%AC%E1%84%83%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A5%E1%84%85%E1%85%B56_lgjvrb.png" title="" alt="최단거리6_lgjvrb.png"></p>
+
+<p>The shortest path to move your character to the other team's camp is as follows.</p>
+
+<p><img src="https://grepp-programmers.s3.ap-northeast-2.amazonaws.com/files/production/d223d017-b3e2-4772-9045-a565133d45ff/%E1%84%8E%E1%85%AC%E1%84%83%E1%85%A1%E1%86%AB%E1%84%80%E1%85%A5%E1%84%85%E1%85%B52_hnjd3b%20%281%29.png" title="" alt="최단거리2_hnjd3b (1).png"></p>
+
+<p>Therefore, since the character passes through total 11 spaces, return 11.</p>
+
+<p>Example #2<br>
+It is the same with an example in the problem statement where there is no way to reach the camp of the other team. Hence return -1.</p>
+</div>
+    </div>
+  </div>
+
+
+  <div class="run-section">
+    <div id="tour3" class="code-section" onkeyup="Hera.tryoutChallenges.resizeEditor(this);">
+      <div class="editor">
+        <ul class="nav nav-pills editor-nav-pills tap-form">
+    <input type="hidden" name="initial_code_1038" id="initial_code_1038" value="def solution(maps):
+    answer = 0
+    return answer" autocomplete="off" />
+    <input id="1038"
+           data-type="code"
+           data-language="python3"
+           type="hidden"
+           value="def solution(maps):
+    answer = 0
+    return answer"/>
+    <li class="nav-item">
+      <a href="#" class="btn-tab nav-link active"
+         data-id="1038"
+         data-language="python3">
+        solution.py </a>
+    </li>
+</ul>
+        
+          <textarea hidden id="code" name="code">def solution(maps):
+    answer = 0
+    return answer</textarea>
+      </div>
+    </div>
+
+    <div class="output-section" id="tour6">
+      <div class="tab-header">
+        <div id="output-title" class="output-title" data-toggle="tab">
+          <span class="connection-status disconnected"
+                data-container="body" data-toggle="popover" data-placement="top" title="서버와의 연결 끊김" data-html="true"
+                data-content="
+                  <h6>네트워크가 불안정하여 서버와의 연결이 끊어졌습니다.
+                  페이지 새로고침을 하거나 네트워크가 안정적이 되면 자동으로 재 연결됩니다.</h6>
+                  <h6 style='margin-top: 4px;'>네트워크가 정상임에도 계속해서 연결이 끊어진 상태가 지속된다면 네트워크 방화벽 문제일 수 있습니다.
+                  모바일 테더링 등 다른 네트워크를 통해 테스트에 접속해 보세요.</h6>">
+            <svg class="ic-24"><use xlink:href="/assets/svg-defs-0e122b08d95a31ed9cbfac254dc90036884da0900f44451857509e3b4e7d29d6.svg#ic-power-off"/></svg>
+          </span>
+
+          Result
+            <a id="stop-button" class="btn btn-sm btn-danger" href="#">Stop</a>
+          <span id="output-spinner" class="spinner hidden">
+              <span class="bounce1"></span>
+              <span class="bounce2"></span>
+              <span class="bounce3"></span>
+            </span>
+        </div>
+      </div>
+      <div class="console tab-content">
+        <div id="output" class="console-output tab-pane fade in active show">
+          Result of [Run Test] or [Submit] will be displayed here
+          <pre class='console-content'><div></div></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="button-section">
+  <div class="testcase-button">
+    <a id="btn-show-question" class="btn btn-dark" href="/learn/courses/30/lessons/1844/questions">Ask a question (51)</a>
+      <a class="btn btn-dark btn-block" data-remote="true" href="/challenge_algorithms/301/custom_testcases?lesson_id=1844">
+        Custom test case
+</a>  </div>
+
+  <div class="func-buttons">
+
+      <a class="btn btn-primary" href="https://programmers.co.kr/account/sign_in?referer=https%3A%2F%2Fschool.programmers.co.kr%2Flearn%2Fcourses%2F30%2Flessons%2F1844%3Flanguage%3Dpython3">Sign in</a>
+  </div>
+</div>
+
+</div>
+  </div>
+
+</div>
+
+
+
+<div class="modal fade" id="modal-dialog" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
+  <script src="/assets/library-27a86f59406422c70c9c5eee10fc1f88ef6de94e3d2b7c2f4b75a644eaf78a9b.js" debug="false"></script>
+  <script>
+//<![CDATA[
+    I18n.defaultLocale = "ko";
+    I18n.locale = "en";
+    I18n.fallbacks = true;
+
+//]]>
+</script>  <script src="/assets/application-d9c3f569872e0b1aee9be34bb7cb829684e5ce93c0f483acd0ad3397a9f72600.js"></script>
+
+<script>
+//<![CDATA[
+window.addEventListener('load', function() {});
+//]]>
+</script>
+  <script src="//widget.cloudinary.com/global/all.js" type="text/javascript">
+    cloudinary.setCloudName('eightcruz');
+  </script>
+
+  <script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
+
+  <script type="text/javascript">
+    Sentry.init({
+      environment: "production",
+      dsn: "https://96f9fc1ff3f44acbb98a9c156338d14b@o1070092.ingest.sentry.io/6136918",
+      integrations: [new Sentry.Integrations.BrowserTracing()],
+      initialScope: {
+        code_version: "14145fdc8b50adc940a4b7cf3e1610758bbb86d5",
+      },
+      // Set tracesSampleRate to 1.0 to capture 100%
+      // of transactions for performance monitoring.
+      // We recommend adjusting this value in production
+      tracesSampleRate: 0.01,
+      beforeSend: function beforeSend(event) {
+        const firstException = (event.exception && event.exception.values || [])[0];
+        const isBuggyBrowser = /Chrome\/10[2-4]/.test(navigator.userAgent);
+        const error = event.exception && event.exception.values && event.exception.values[0];
+        const isKnownBrowserBug =
+          isBuggyBrowser &&
+          (error && error.type === 'EvalError' &&
+            error.value && error.value.includes('Possible side-effect in debug-evaluate')) ||
+          (error && error.type === 'SyntaxError' && error.value &&
+            (error.value.includes('Unexpected end of input') ||
+             error.value.includes('Unexpected token \'{\'') ||
+             error.value.includes('Unexpected token \'}\'') ||
+             error.value.includes('Unexpected token \'(\'') ||
+             error.value.includes('Unexpected token \')\'') ||
+             error.value.includes('Unexpected token \'[\'') ||
+             error.value.includes('Unexpected token \']\'') ||
+             error.value.includes('Invalid or unexpected token') ||
+             error.value.includes('missing ) after argument list')));
+
+        if (firstException) {
+          const mechanism = firstException.mechanism;
+          const stacktrace = firstException.stacktrace;
+          const isOnError = () => mechanism && mechanism.type === 'onerror';
+          const hasAnonymousFilename = () => Boolean(
+            stacktrace && stacktrace.frames && stacktrace.frames.some(
+              ({ filename }) => filename && filename.includes('anonymous'),
+            ),
+          );
+
+          /* console의 예외는 sentry에 보내지 않는다. #4226 */
+          if (isOnError() && hasAnonymousFilename())
+            return null;
+        }
+
+        if (isKnownBrowserBug) {
+          return null;
+        }
+        return event;
+      },
+    });
+  </script>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NT8HLJD"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<script type="text/javascript" charset="utf-8">
+  window.addEventListener('afterprint', function() {
+      $.ajax({
+          type: 'POST',
+          url: '/api/action_trackings/print_screen',
+          data: {
+              current_path: window.location.href
+          }
+      })
+  })
+</script>
+
+
+
+
+<noscript>
+  이 사이트의 기능을 모두 활용하기 위해서는 자바스크립트를 활성화할 필요가 있습니다.
+  <a href="http://www.enable-javascript.com/ko/" target="_blank">
+    브라우저에서 자바스크립트를 활성화하는 방법</a>을 참고하세요.
+</noscript>
+
+
+</body>
+</html>

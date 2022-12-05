@@ -1,6 +1,11 @@
 crowd_center = [749, 106, 906, 305]
+recog_center = [708, 136, 852, 280]
 
-recog_center = [676, 152, 532, 296]
+print(749 + 906)
+print(106 + 305)
+
+print(708 + 852)
+print(136 + 280)
 
 
 def IoU(box1, box2):
