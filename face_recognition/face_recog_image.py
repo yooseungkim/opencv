@@ -20,7 +20,7 @@ class FaceRecog():
     def __init__(self):
 
         self.image = cv2.imread(path)
-        self.name = "test"
+        self.name = path.split("/")[-1][:-4]
         self.known_face_encodings = []
         self.known_face_names = []
 
@@ -95,7 +95,7 @@ class FaceRecog():
             cv2.putText(frame, name, (left + 6, bottom - 6),
                         font, 1.0, (255, 255, 255), 1)
 
-        cv2.imwrite(f"{self.name}.jpg", frame)
+        cv2.imwrite(f"recog_video/{self.name}.jpg", frame)
 
         return frame
 

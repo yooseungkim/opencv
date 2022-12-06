@@ -23,16 +23,16 @@ class FaceRecog():
         # To use video input
         self.camera = cv2.VideoCapture(path)  # video input
 
-        # self.name = path.split("/")[-1][:-4]
-        self.name = "test"
+        self.name = path.split("/")[-1][:-4]
+        # self.name = "test"
 
         # print(self.name)
 
         self.file = open(f"recog_video/{self.name}_center.txt", "w")
         # Save Video
         self.videowriter = cv2.VideoWriter(
-            f"recog_video/{self.name}.mp4", cv2.VideoWriter_fourcc(
-                *'MP4V'), 30, (int(self.camera.get(3)), int(self.camera.get(4)))
+            "test.avi", cv2.VideoWriter_fourcc(
+                *'DIVX'), 60, (int(self.camera.get(3)), int(self.camera.get(4)))
         )
 
         self.known_face_encodings = []
