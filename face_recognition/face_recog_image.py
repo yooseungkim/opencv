@@ -19,8 +19,9 @@ path = args.path
 class FaceRecog():
     def __init__(self):
 
-        self.image = cv2.imread(path)
-        self.name = path.split("/")[-1][:-4]
+        # self.image = cv2.imread(path)
+        # self.name = path.split("/")[-1][:-4]
+        self.name = "test"
         self.known_face_encodings = []
         self.known_face_names = []
 
@@ -42,14 +43,14 @@ class FaceRecog():
         self.face_names = []
         self.process_this_frame = True
 
-    def get_frame(self):
+    def get_frame(self, images):
 
-        frame = self.image
+        # frame = self.image
 
-        rgb_frame = frame[:, :, ::-1]
+        # rgb_frame = frame[:, :, ::-1]
+        rgb_frames = [image[:, :, ::-1] for image in images]
 
-        # Only process every other frame of video to save time
-        if self.process_this_frame:
+        for key, rgb_frame in enumerate(rgb_frames):
             # Find all the faces and face encodings in the current frame of video
             self.face_locations = face_recognition.face_locations(
                 rgb_frame)
@@ -67,37 +68,35 @@ class FaceRecog():
                 if min_value < 0.6:
                     index = np.argmin(distances)
                     name = self.known_face_names[index]
+                    # return key  # 주인공으로 인식된 사진의 index return (다른 사진은 출력 x)
 
                 self.face_names.append(name)
 
-        self.process_this_frame = not self.process_this_frame
+            # Display the results
+            # for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):
 
-        found = None
-        # Display the results
-        for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):
+            #     name = "".join(i for i in name if not i.isdigit())
 
-            name = "".join(i for i in name if not i.isdigit())
+            #     center = ((right + left) // 2, (top + bottom) // 2)
+            #     if args.verbose:
+            #         print(f"{name}: ({center[0]}, {center[1]})")
 
-            center = ((right + left) // 2, (top + bottom) // 2)
-            if args.verbose:
-                print(f"{name}: ({center[0]}, {center[1]})")
+            #     cv2.line(frame, center, center, (255, 0, 0), 10)
 
-            cv2.line(frame, center, center, (255, 0, 0), 10)
+            #     # Draw a box around the face
+            #     cv2.rectangle(frame, (left, top),
+            #                   (right, bottom), (0, 0, 255), 2)
 
-            # Draw a box around the face
-            cv2.rectangle(frame, (left, top),
-                          (right, bottom), (0, 0, 255), 2)
+            #     # Draw a label with a name below the face
+            #     cv2.rectangle(frame, (left, bottom - 35),
+            #                   (right, bottom), (0, 0, 255), cv2.FILLED)
+            #     font = cv2.FONT_HERSHEY_DUPLEX
+            #     cv2.putText(frame, name, (left + 6, bottom - 6),
+            #                 font, 1.0, (255, 255, 255), 1)
 
-            # Draw a label with a name below the face
-            cv2.rectangle(frame, (left, bottom - 35),
-                          (right, bottom), (0, 0, 255), cv2.FILLED)
-            font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6),
-                        font, 1.0, (255, 255, 255), 1)
+            cv2.imwrite(f"recog_video/{self.name}_{key}.jpg", images[key])
 
-        cv2.imwrite(f"recog_video/{self.name}.jpg", frame)
-
-        return frame
+        return None
 
     def get_jpg_bytes(self):
         frame = self.get_frame()
@@ -109,9 +108,15 @@ class FaceRecog():
 
 
 if __name__ == '__main__':
+    image1 = cv2.imread(
+        "/Users/yooseungkim/Downloads/nego/Screenshot 2022-12-06 at 11.41.28 AM.png")
+    image2 = cv2.imread("/Users/yooseungkim/Downloads/nego/kwanghee_39.png")
+    image3 = cv2.imread("/Users/yooseungkim/Downloads/nego/kwanghee_61.png")
+    images = [image1, image2, image3]
     face_recog = FaceRecog()
     print(face_recog.known_face_names)
-    frame = face_recog.get_frame()
+    index = face_recog.get_frame(images)
+    print(index)
 
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
     print('finish')
