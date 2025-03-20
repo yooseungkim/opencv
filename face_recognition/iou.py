@@ -1,13 +1,3 @@
-crowd_center = [749, 106, 906, 305]
-recog_center = [708, 136, 852, 280]
-
-print(749 + 906)
-print(106 + 305)
-
-print(708 + 852)
-print(136 + 280)
-
-
 def IoU(box1, box2):
     # box = (x1, y1, x2, y2)
     box1_area = (box1[2] - box1[0] + 1) * (box1[3] - box1[1] + 1)
@@ -26,6 +16,3 @@ def IoU(box1, box2):
     inter = w * h
     iou = inter / (box1_area + box2_area - inter)
     return iou
-
-
-print(IoU(crowd_center, recog_center))

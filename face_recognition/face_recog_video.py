@@ -76,9 +76,10 @@ class FaceRecog():
                 rgb_small_frame)
             self.face_encodings = face_recognition.face_encodings(
                 rgb_small_frame, self.face_locations)
-
+            print(self.face_locations)
             self.face_names = []
             for face_encoding in self.face_encodings:
+                print(face_encoding.shape)
                 # See if the face is a match for the known face(s)
                 distances = face_recognition.face_distance(
                     self.known_face_encodings, face_encoding)
@@ -107,11 +108,11 @@ class FaceRecog():
 
             name = "".join(i for i in name if not i.isdigit())
 
-            center = ((right + left) // 2, (top + bottom) // 2)
-            if args.verbose:
-                print(f"{name}: ({center[0]}, {center[1]})")
+            # center = ((right + left) // 2, (top + bottom) // 2)
+            # if args.verbose:
+            #     print(f"{name}: ({center[0]}, {center[1]})")
 
-            cv2.line(frame, center, center, (255, 0, 0), 10)
+            # cv2.line(frame, center, center, (255, 0, 0), 10)
 
             # Draw a box around the face
             cv2.rectangle(frame, (left, top),
@@ -154,15 +155,12 @@ if __name__ == '__main__':
             break
 
         # show the frame
-        cv2.imshow("Frame", frame)
+        # cv2.imshow("Frame", frame)
         face_recog.videowriter.write(frame)
-        key = cv2.waitKey(1) & 0xFF
 
         fr += 1
 
         # if the `q` key was pressed, break from the loop
-        if key == ord("q"):
-            break
 
     # do a bit of cleanup
     face_recog.file.close()
